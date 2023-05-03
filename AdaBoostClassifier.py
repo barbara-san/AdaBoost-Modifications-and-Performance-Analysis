@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 
 class AdaBoost:
-    def __init__(self, n_estimators=50, learning_rate=1.0, random_state=None):
+    def __init__(self, n_estimators=1000, learning_rate=1.0, random_state=None):
         self.n_estimators = n_estimators
         self.learning_rate = learning_rate
         self.random_state = random_state
