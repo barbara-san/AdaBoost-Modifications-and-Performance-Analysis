@@ -10,7 +10,7 @@ class AdaBoost:
         self.estimator_weights_ = np.zeros(n_estimators, dtype=np.float64)
         self.estimator_errors_ = np.ones(n_estimators, dtype=np.float64)
 
-    def fit(self, X_train, y_train):
+    def fit(self, X_train, y_train, ratio=0.5):
         sample_weight = np.ones(len(X_train)) / len(X_train)
         for i in range(self.n_estimators):
             estimator = DecisionTreeClassifier(max_depth=1, max_features=1, random_state=self.random_state)
@@ -25,7 +25,7 @@ class AdaBoost:
             sample_weight /= np.sum(sample_weight)
             if error == 0:
                 error += 1e-10
-            alpha = 0.5 * np.log((1 - error) / (error))
+            alpha = ratio * np.log((1 - error) / (error))
             self.estimators_.append(estimator)
             self.estimator_weights_[i] = alpha
             self.estimator_errors_[i] = error
