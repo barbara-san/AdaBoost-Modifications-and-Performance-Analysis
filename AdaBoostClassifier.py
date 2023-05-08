@@ -23,7 +23,9 @@ class AdaBoost:
             else:
                 sample_weight[y_pred != y_train] *= (error / (1 - error))
             sample_weight /= np.sum(sample_weight)
-            alpha = 0.5 * np.log((1 - error + 1e-10) / (error + 1e-10))
+            if error == 0:
+                error += 1e-10
+            alpha = 0.5 * np.log((1 - error) / (error))
             self.estimators_.append(estimator)
             self.estimator_weights_[i] = alpha
             self.estimator_errors_[i] = error
