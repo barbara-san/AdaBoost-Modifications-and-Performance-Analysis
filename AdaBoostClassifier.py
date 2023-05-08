@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 
 class AdaBoost:
-    def __init__(self, n_estimators=1000, learning_rate=1.0, random_state=None):
+    def __init__(self, n_estimators=1000, learning_rate=1.0, random_state=111):
         self.n_estimators = n_estimators
         self.learning_rate = learning_rate
         self.random_state = random_state
@@ -23,9 +23,7 @@ class AdaBoost:
             else:
                 sample_weight[y_pred != y_train] *= (error / (1 - error))
             sample_weight /= np.sum(sample_weight)
-            if error == 0:
-                error += 1e-10
-            alpha = ratio * np.log((1 - error) / (error))
+            alpha = ratio * np.log((1 - error + 1e-10) / (error + 1e-10))
             self.estimators_.append(estimator)
             self.estimator_weights_[i] = alpha
             self.estimator_errors_[i] = error
@@ -35,4 +33,5 @@ class AdaBoost:
         for i in range(self.n_estimators):
             y_pred = self.estimators_[i].predict(X_test)
             predictions += self.estimator_weights_[i] * y_pred
+
         return np.sign(predictions)
