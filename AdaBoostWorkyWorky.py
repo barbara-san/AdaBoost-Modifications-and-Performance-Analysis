@@ -59,7 +59,7 @@ def compute_alpha(error, alpha_type=0):
     if alpha_type == 2:
         return error
     if alpha_type == 3:
-        return error**2
+        return np.sqrt(error)
 
 def update_weights(w_i, alpha, y, y_pred):
     return w_i * np.exp(alpha * (np.not_equal(y, y_pred)).astype(int))
