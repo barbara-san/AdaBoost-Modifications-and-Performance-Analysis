@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+import inspect
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
 
 class AdaBoost:
     
@@ -52,7 +54,7 @@ def compute_error(y, y_pred, w_i):
 def compute_alpha(error, alpha_type=0):
     # original
     if alpha_type == 0:
-        return np.log((1 - error) / error)
+        return np.log((1 - error + 1e-10) / (error + 1e-10))
     # new ones
     if alpha_type == 1:
         return np.log(error + 1e-10)
