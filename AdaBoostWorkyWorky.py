@@ -34,7 +34,7 @@ class AdaBoost:
             self.G_M.append(G_m)
             error_m = compute_error(y, y_pred, w_i)
             self.training_errors.append(error_m)
-            alpha_m = compute_alpha(error_m, alpha_type)
+            alpha_m = compute_alpha(error_m, y, alpha_type)
             self.alphas.append(alpha_m)
         assert len(self.G_M) == len(self.alphas)
 
@@ -51,17 +51,17 @@ class AdaBoost:
 def compute_error(y, y_pred, w_i):
     return (sum(w_i * (np.not_equal(y, y_pred)).astype(int)))/sum(w_i)
 
-def compute_alpha(error, alpha_type=0):
+def compute_alpha(error, target, alpha_type=0):
     # original
     if alpha_type == 0:
-        return np.log((1 - error + 1e-10) / (error + 1e-10))
+        return 0.5 * np.log((1 - error + 1e-10) / (error + 1e-10))
     # new ones
     if alpha_type == 1:
-        return np.log(error + 1e-10)
+        count = target.value_counts()
+        ratio = min(count)/sum(count)
+        return ratio * np.log((1 - error + 1e-10) / (error + 1e-10))
     if alpha_type == 2:
-        return error
-    if alpha_type == 3:
-        return np.sqrt(error)
+        return error   
 
 def update_weights(w_i, alpha, y, y_pred):
     return w_i * np.exp(alpha * (np.not_equal(y, y_pred)).astype(int))
