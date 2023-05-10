@@ -6,12 +6,13 @@ from sklearn.metrics import accuracy_score
 
 class AdaBoost:
     
-    def __init__(self):
+    def __init__(self, alpha_const=0.5):
         self.alphas = []
         self.G_M = []
         self.M = None
         self.training_errors = []
         self.prediction_errors = []
+        self.alpha_const = alpha_const
 
     def fit(self, X, y, alpha_type=0, M=100):
         #X: independent variables - array-like matrix
@@ -34,7 +35,7 @@ class AdaBoost:
             self.G_M.append(G_m)
             error_m = compute_error(y, y_pred, w_i)
             self.training_errors.append(error_m)
-            alpha_m = compute_alpha(error_m, y, alpha_type)
+            alpha_m = compute_alpha(error_m, self.alpha_const, alpha_type)
             self.alphas.append(alpha_m)
         assert len(self.G_M) == len(self.alphas)
 
@@ -43,7 +44,7 @@ class AdaBoost:
         for m in range(self.M):
             y_pred_m = self.G_M[m].predict(X) * self.alphas[m]
             weak_preds.iloc[:,m] = y_pred_m
-        y_pred = (1 * np.sign(weak_preds.T.sum())).astype(int)
+        y_pred = (np.sign(weak_preds.T.sum())).astype(int)
         return y_pred
     
 # AUXILIAR FUNCTIONS TO THE ADABOOST CLASS
@@ -51,15 +52,13 @@ class AdaBoost:
 def compute_error(y, y_pred, w_i):
     return (sum(w_i * (np.not_equal(y, y_pred)).astype(int)))/sum(w_i)
 
-def compute_alpha(error, target, alpha_type=0):
+def compute_alpha(error, alpha_const, alpha_type=0):
     # original
     if alpha_type == 0:
         return 0.5 * np.log((1 - error + 1e-10) / (error + 1e-10))
     # new ones
     if alpha_type == 1:
-        count = target.value_counts()
-        ratio = min(count)/sum(count)
-        return ratio * np.log((1 - error + 1e-10) / (error + 1e-10))
+        return alpha_const * np.log((1 - error + 1e-10) / (error + 1e-10))
     if alpha_type == 2:
         return error   
 
