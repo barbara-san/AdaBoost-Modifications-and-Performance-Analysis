@@ -6,13 +6,12 @@ from sklearn.metrics import accuracy_score
 
 class AdaBoost:
     
-    def __init__(self, alpha_const=0.5):
+    def __init__(self):
         self.alphas = []
         self.G_M = []
         self.M = None
         self.training_errors = []
         self.prediction_errors = []
-        self.alpha_const = alpha_const
 
     def fit(self, X, y, alpha_type=0, M=100):
         #X: independent variables - array-like matrix
@@ -35,7 +34,7 @@ class AdaBoost:
             self.G_M.append(G_m)
             error_m = compute_error(y, y_pred, w_i)
             self.training_errors.append(error_m)
-            alpha_m = compute_alpha(error_m, self.alpha_const, alpha_type)
+            alpha_m = compute_alpha(error_m, y, alpha_type)
             self.alphas.append(alpha_m)
         assert len(self.G_M) == len(self.alphas)
 
@@ -52,14 +51,16 @@ class AdaBoost:
 def compute_error(y, y_pred, w_i):
     return (sum(w_i * (np.not_equal(y, y_pred)).astype(int)))/sum(w_i)
 
-def compute_alpha(error, alpha_const, alpha_type=0):
+def compute_alpha(error, y_true, alpha_type=0):
     # original
     if alpha_type == 0:
         return 0.5 * np.log((1 - error + 1e-10) / (error + 1e-10))
     # new ones
-    if alpha_type == 1:
-        return alpha_const * np.log((1 - error + 1e-10) / (error + 1e-10))
-    if alpha_type == 2:
+    elif alpha_type == 1:
+        unique = y_true.value_counts()
+        ratio = min(unique) / sum(unique)
+        return ratio * np.log((1 - error + 1e-10) / (error + 1e-10))
+    elif alpha_type == 2:
         return error   
 
 def update_weights(w_i, alpha, y, y_pred):
