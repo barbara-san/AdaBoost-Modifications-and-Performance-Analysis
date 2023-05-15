@@ -3,6 +3,7 @@ import numpy as np
 import inspect
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
 
 class AdaBoost:
     
@@ -13,7 +14,7 @@ class AdaBoost:
         self.training_errors = []
         self.prediction_errors = []
 
-    def fit(self, X, y, alpha_type=0, M=100):
+    def fit(self, X, y, alpha_t=0, M=100):
         #X: independent variables - array-like matrix
         #y: target variable - array-like vector
         #M: number of boosting rounds. Default is 100 - integer
@@ -34,7 +35,7 @@ class AdaBoost:
             self.G_M.append(G_m)
             error_m = compute_error(y, y_pred, w_i)
             self.training_errors.append(error_m)
-            alpha_m = compute_alpha(error_m, y, alpha_type)
+            alpha_m = compute_alpha(error_m, y, alpha_type=alpha_t)
             self.alphas.append(alpha_m)
         assert len(self.G_M) == len(self.alphas)
 
@@ -45,6 +46,17 @@ class AdaBoost:
             weak_preds.iloc[:,m] = y_pred_m
         y_pred = (np.sign(weak_preds.T.sum())).astype(int)
         return y_pred
+    
+    """ def score(self, X, y):
+        ab = AdaBoost()
+        x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1111)
+        ab.fit(x_train, y_train)
+        y_pred = ab.predict(x_test)
+        return accuracy_score(y_test, y_pred)
+    
+    def get_params(self, deep=False):
+        d = {'alpha_c': self.alpha_calc}
+        return d """
     
 # AUXILIAR FUNCTIONS TO THE ADABOOST CLASS
 
