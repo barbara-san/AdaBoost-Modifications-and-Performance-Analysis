@@ -7,14 +7,15 @@ from sklearn.model_selection import train_test_split
 
 class AdaBoost:
     
-    def __init__(self):
+    def __init__(self, alpha_type):
         self.alphas = []
         self.G_M = []
         self.M = None
         self.training_errors = []
         self.prediction_errors = []
+        self.alpha_type = alpha_type
 
-    def fit(self, X, y, alpha_t=0, M=100):
+    def fit(self, X, y, M=100):
         #X: independent variables - array-like matrix
         #y: target variable - array-like vector
         #M: number of boosting rounds. Default is 100 - integer
@@ -35,7 +36,7 @@ class AdaBoost:
             self.G_M.append(G_m)
             error_m = compute_error(y, y_pred, w_i)
             self.training_errors.append(error_m)
-            alpha_m = compute_alpha(error_m, y, alpha_type=alpha_t)
+            alpha_m = compute_alpha(error_m, y, alpha_type=self.alpha_type)
             self.alphas.append(alpha_m)
         assert len(self.G_M) == len(self.alphas)
 
