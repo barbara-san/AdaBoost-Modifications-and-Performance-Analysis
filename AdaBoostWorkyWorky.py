@@ -20,7 +20,8 @@ class AdaBoost:
         #y: target variable - array-like vector
         #M: number of boosting rounds. Default is 100 - integer
 
-        self.alphas = [] 
+        self.alphas = []
+        self.G_M = []
         self.training_errors = []
         self.M = M
 
