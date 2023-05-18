@@ -49,17 +49,6 @@ class AdaBoost:
         y_pred = (np.sign(weak_preds.T.sum())).astype(int)
         return y_pred
     
-    """ def score(self, X, y):
-        ab = AdaBoost()
-        x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1111)
-        ab.fit(x_train, y_train)
-        y_pred = ab.predict(x_test)
-        return accuracy_score(y_test, y_pred)
-    
-    def get_params(self, deep=False):
-        d = {'alpha_c': self.alpha_calc}
-        return d """
-    
 # AUXILIAR FUNCTIONS TO THE ADABOOST CLASS
 
 def compute_error(y, y_pred, w_i):
@@ -77,12 +66,8 @@ def compute_alpha(error, y_true, alpha_type=0):
     elif alpha_type == 2:
         return error   
     elif alpha_type == 3:
-        beta = 1
-        classes, counts = np.unique(y_true, return_counts=True)
-        class_weights = np.exp(-beta * counts / np.sum(counts))
-        weighted_error = np.dot(class_weights, np.full(len(classes), error))
-        alpha = 0.5 * np.log((1 - weighted_error + 1e-10) / (weighted_error + 1e-10))
-        return alpha
+        return np.exp(error**4)
+
 
 def update_weights(w_i, alpha, y, y_pred):
     return w_i * np.exp(alpha * (np.not_equal(y, y_pred)).astype(int))
