@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 
 class AdaBoost:
     
-    def __init__(self, alpha_type):
+    def __init__(self, alpha_type=0):
         self.alphas = []
         self.G_M = []
         self.M = None
