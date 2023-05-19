@@ -15,7 +15,7 @@ class AdaBoost:
         self.prediction_errors = []
         self.alpha_type = alpha_type
 
-    def fit(self, X, y, M=20):
+    def fit(self, X, y, M=15):
         #X: independent variables - array-like matrix
         #y: target variable - array-like vector
         #M: number of boosting rounds. Default is 100 - integer
