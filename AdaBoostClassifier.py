@@ -1,10 +1,7 @@
 import pandas as pd
 import numpy as np
 import random
-import inspect
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
 
 class AdaBoost:
     
@@ -58,12 +55,6 @@ class AdaBoost:
             G_m = DecisionTreeClassifier(max_depth = 1, max_features= 1)
             G_m.fit(X, y, sample_weight = w_i)
 
-            # X_subset = X.sample(n=desired_num_examples, replace=False)
-            # y_subset = y[X_subset.index]
-            # valid_indices = np.intersect1d(X.index, X_subset.index)
-            # valid_indices = valid_indices[valid_indices < len(w_i)]
-            # w_i_subset = w_i[valid_indices]
-
             y_pred = G_m.predict(X)
 
             self.G_M.append(G_m)
@@ -94,13 +85,6 @@ def compute_alpha(error, alpha_type=0):
     # new one - directly proportional to error
     elif alpha_type == 1:
         return error
-        ''' elif alpha_type == 2:
-                unique = y_true.value_counts()
-                ratio = min(unique) / sum(unique)
-                return ratio * np.log((1 - error + 1e-10) / (error + 1e-10))
-            elif alpha_type == 3:
-                return np.exp(error**4)'''
-
 
 def update_weights(w_i, alpha, y, y_pred):
     return w_i * np.exp(alpha * (np.not_equal(y, y_pred)).astype(int))
