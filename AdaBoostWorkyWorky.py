@@ -30,10 +30,9 @@ class AdaBoost:
         # percentage = 0.3  # Example percentage, adjust as needed
         # desired_num_examples = int(len(X) * percentage)
         choices = [True, False]
+        prob = 100
 
         for m in range(0, M):
-            prob = 1/M * (M-m) * 100
-
             # print("Tamanho =", len(y))
             if m == 0:
                 w_i = np.ones(len(y)) * 1 / len(y)
@@ -41,11 +40,11 @@ class AdaBoost:
                 w_i = update_weights(w_i, alpha_m, y, y_pred)
                 
                 # to duplicate the examples in X whose prediction doesnt match the value in y
-
                 choice = random.choices(choices, cum_weights=(prob, 100-prob), k=1)[0]
 
                 if choice and self.duplicate:
                     mask = (y_pred != y)
+                    prob = np.sum(mask) / len(X)
                     X_mismatched = X[mask]
                     y_mismatched = y[mask]
                     w_i_mismatched = w_i[mask]
