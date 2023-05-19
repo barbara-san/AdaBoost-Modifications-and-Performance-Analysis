@@ -15,7 +15,7 @@ class AdaBoost:
         self.prediction_errors = []
         self.alpha_type = alpha_type
 
-    def fit(self, X, y, M=100):
+    def fit(self, X, y, M=20):
         #X: independent variables - array-like matrix
         #y: target variable - array-like vector
         #M: number of boosting rounds. Default is 100 - integer
@@ -25,20 +25,42 @@ class AdaBoost:
         self.training_errors = []
         self.M = M
 
+        #percentage = 0.3  # Example percentage, adjust as needed
+        #desired_num_examples = int(len(X) * percentage)
+
         for m in range(0, M):
+            #print("Tamanho =", len(y))
             if m == 0:
                 w_i = np.ones(len(y)) * 1 / len(y)
             else:
                 w_i = update_weights(w_i, alpha_m, y, y_pred)
+                
+                # to duplicate the examples in X whose prediction doesnt match the value in y
+                mask = (y_pred != y)
+                X_mismatched = X[mask]
+                y_mismatched = y[mask]
+                w_i_mismatched = w_i[mask]
+                X = pd.concat([X, X_mismatched], axis=0)
+                y = pd.concat([y, y_mismatched], axis=0)
+                w_i = np.concatenate((w_i, w_i_mismatched))
             
             G_m = DecisionTreeClassifier(max_depth = 1, max_features= 1)
             G_m.fit(X, y, sample_weight = w_i)
+
+            #X_subset = X.sample(n=desired_num_examples, replace=False)
+            #y_subset = y[X_subset.index]
+            #valid_indices = np.intersect1d(X.index, X_subset.index)
+            #valid_indices = valid_indices[valid_indices < len(w_i)]
+            #w_i_subset = w_i[valid_indices]
+
             y_pred = G_m.predict(X)
+
             self.G_M.append(G_m)
             error_m = compute_error(y, y_pred, w_i)
             self.training_errors.append(error_m)
             alpha_m = compute_alpha(error_m, y, alpha_type=self.alpha_type)
             self.alphas.append(alpha_m)
+
         assert len(self.G_M) == len(self.alphas)
 
     def predict(self, X):
