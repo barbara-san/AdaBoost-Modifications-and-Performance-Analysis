@@ -40,7 +40,7 @@ class AdaBoost:
                 w_i = update_weights(w_i, alpha_m, y, y_pred)
                 
                 # to duplicate the examples in X whose prediction doesnt match the value in y
-                if (prob > 0):
+                if (prob + 100 - prob > 0):
                     choice = random.choices(choices, cum_weights=(prob, 100-prob), k=1)[0]
                 else:
                     choice = False
