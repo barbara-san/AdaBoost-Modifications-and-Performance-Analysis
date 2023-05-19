@@ -17,7 +17,7 @@ class AdaBoost:
         self.alpha_type = alpha_type
         self.duplicate = duplicate
 
-    def fit(self, X, y, M=15):
+    def fit(self, X, y, M=40):
         # X: independent variables - array-like matrix
         # y: target variable - array-like vector
         # M: number of boosting rounds. Default is 100 - integer
@@ -30,7 +30,7 @@ class AdaBoost:
         # percentage = 0.3  # Example percentage, adjust as needed
         # desired_num_examples = int(len(X) * percentage)
         choices = [True, False]
-        prob = 100
+        prob = 1
 
         for m in range(0, M):
             # print("Tamanho =", len(y))
@@ -41,7 +41,7 @@ class AdaBoost:
                 
                 # to duplicate the examples in X whose prediction doesnt match the value in y
                 if (prob + 100 - prob > 0):
-                    choice = random.choices(choices, cum_weights=(prob, 100-prob), k=1)[0]
+                    choice = random.choices(choices, weights=[prob, 1-prob], k=1)[0]
                 else:
                     choice = False
 
