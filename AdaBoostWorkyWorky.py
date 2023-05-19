@@ -42,9 +42,9 @@ class AdaBoost:
                 
                 # to duplicate the examples in X whose prediction doesnt match the value in y
 
-                choice = random.choices(choices, cum_weights=(prob, 100-prob), k=2)
+                choice = random.choices(choices, cum_weights=(prob, 100-prob), k=1)[0]
 
-                if choice:
+                if choice and self.duplicate:
                     mask = (y_pred != y)
                     X_mismatched = X[mask]
                     y_mismatched = y[mask]
