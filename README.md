@@ -44,6 +44,8 @@ The second one, during each iteration of the classifier, duplicates misclassifie
 | Dataset 146820 | 0.9496  (2) | 0.9496  (1) | 0.9435  (3) | 0.9366  (4) | 
 | Average Rank | 1.75 | 2.5 | 2.5 | 3.25 |
 
+Label: Mean Accuracy of a 10-fold CV (rank)
+
 After obtaining the results presented in the previous table, we performed a hypothesis test to check whether all algorithms could be considered equivalent, by evaluating the similarity between their rankings across the tasks.
 
 With this in mind, we realized a Friedman test, which gave us a p-value of 0.44.
