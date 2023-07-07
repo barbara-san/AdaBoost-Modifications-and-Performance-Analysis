@@ -8,7 +8,7 @@ The primary aim of this project is to select a machine learning algorithm, modif
 
 ## Project Objective
 
-For this project, our group has decided to modify the AdaBoost algorithm. The original implementation of AdaBoost can be found [here](https://towardsdatascience.com/adaboost-from-scratch-37a936da3d50). Our goal is to achieve superior results specifically for binary datasets with significant label imbalance.
+For this project, our group has decided to modify the AdaBoost algorithm. The used implementation of AdaBoost was adapted from the one that can be found [here](https://towardsdatascience.com/adaboost-from-scratch-37a936da3d50). Our goal is to achieve superior results specifically for binary datasets with significant label imbalance.
 
 ## Changes Made to the Original Algorithm
 
