@@ -38,11 +38,11 @@ The second one, during each iteration of the classifier, duplicates misclassifie
 
 | Dataset | Base Model | Alpha Changed  | Misclassified Duplicated | Both |
 | ----------- | ----------- | ----------- | ----------- | ----------- |
-| Dataset 15 | 0.9619  (2) | 0.9546  (4) | 0.9606  (3) | 0.9678  (1) |
-| Dataset 24 | 0.9213  (2) | 0.9098  (3) | 0.9316  (1) | 0.9077  (4) |
-| Dataset 3904 | 0.8081  (1) | 0.7970  (2) | 0.7529  (3) | 0.6201  (4) |
-| Dataset 146820 | 0.9496  (2) | 0.9496  (1) | 0.9435  (3) | 0.9366  (4) | 
-| Average Rank | 1.75 | 2.5 | 2.5 | 3.25 |
+| Dataset 15 | 0.96  (2) | 0.95  (4) | 0.96  (3) | 0.97  (1) |
+| Dataset 24 | 0.92  (2) | 0.91  (3) | 0.93  (1) | 0.91  (4) |
+| Dataset 3904 | 0.81  (1) | 0.80  (2) | 0.75  (3) | 0.62  (4) |
+| Dataset 146820 | 0.95  (2) | 0.95  (1) | 0.94  (3) | 0.94  (4) | 
+| Average Rank | 1.75 | 2.50 | 2.50 | 3.25 |
 
 Label: Mean Accuracy of a 10-fold CV (rank)
 
