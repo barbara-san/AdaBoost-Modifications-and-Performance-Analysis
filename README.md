@@ -1,4 +1,4 @@
-# ML2223
+# Machine Learning I - 2022/2023
 
 ## About
 
